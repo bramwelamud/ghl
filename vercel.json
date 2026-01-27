@@ -1,7 +1,6 @@
 {
-  "version": 2,
   "rewrites": [
-    { "source": "/", "destination": "/api/index" },
-    { "source": "/property/:id", "destination": "/api/detail?id=:id" }
+    { "source": "/api/listings", "destination": "/api/listings.js" },
+    { "source": "/property/:id", "destination": "/api/detail.js?id=:id" }
   ]
 }
