@@ -1,55 +1,29 @@
-import fetch from "node-fetch";
-
-const DDF_USERNAME = "PfSfzRj7UaVnevOYtmYopvGK";
-const DDF_PASSWORD = "wMzcKq7pgBnvHTqcz0UaW0Vz";
+import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   const { id } = req.query;
+  const credentials = {
+    client_id: 'PfSfzRj7UaVnevOYtmYopvGK',
+    client_secret: 'wMzcKq7pgBnvHTqcz0UaW0Vz',
+    grant_type: 'client_credentials',
+    scope: 'DDFApi_Read'
+  };
 
   try {
-    res.setHeader("X-Frame-Options", "ALLOWALL");
-    res.setHeader(
-      "Content-Security-Policy",
-      "frame-ancestors 'self' https://*.gohighlevel.com"
-    );
+    const tokenResponse = await fetch("https://identity.crea.ca/connect/token", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(credentials)
+    });
+    const { access_token } = await tokenResponse.json();
 
-    const response = await fetch(
-      `https://ddfapi.realtor.ca/odata/Property(${id})`,
-      {
-        headers: {
-          Authorization:
-            "Basic " +
-            Buffer.from(`${DDF_USERNAME}:${DDF_PASSWORD}`).toString("base64"),
-        },
-      }
-    );
-
-    const l = await response.json();
-
-    const html = `
-      <html>
-        <head>
-          <title>${l.PropertyType} - $${l.Price}</title>
-        </head>
-        <body>
-          <h1>${l.PropertyType} - $${l.Price}</h1>
-          <img src="${
-            l.Photo ? l.Photo[0].MediaURL : "https://via.placeholder.com/500"
-          }" />
-          <p>${l.Address}, ${l.City}, ${l.Province}</p>
-          <p>${l.Description || ""}</p>
-          <a href="/api/listings">Back to Listings</a>
-          <footer style="margin-top:20px; font-size:12px;">
-            Data courtesy of the Canadian Real Estate Association (CREA).<br/>
-            Information deemed reliable but not guaranteed.
-          </footer>
-        </body>
-      </html>
-    `;
-
-    res.status(200).send(html);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error fetching listing details.");
+    const ddfResponse = await fetch(`https://ddfapi.realtor.ca/odata/v1/Property('${id}')`, {
+      headers: { 'Authorization': `Bearer ${access_token}`, 'Accept': 'application/json' }
+    });
+    
+    const data = await ddfResponse.json();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }
