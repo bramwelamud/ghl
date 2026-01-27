@@ -1,0 +1,12 @@
+{
+  "name": "listings-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.4.1"
+  },
+  "scripts": {
+    "start": "vercel dev"
+  }
+}
