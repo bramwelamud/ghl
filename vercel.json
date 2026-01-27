@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "routes": [
-    { "src": "/", "dest": "/api/listings.js" },           
-    { "src": "/listings/(.*)", "dest": "/api/listings/$1" }
+  "rewrites": [
+    { "source": "/", "destination": "/api/listings" },
+    { "source": "/listings/:id", "destination": "/api/[id]?id=:id" }
   ]
 }
