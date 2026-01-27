@@ -1,41 +1,34 @@
 import fetch from 'node-fetch';
 
-const DDF_AUTH = Buffer.from("PfSfzRj7UaVnevOYtmYopvGK:wMzcKq7pgBnvHTqcz0UaW0Vz").toString("base64");
-
 export default async function handler(req, res) {
+  const credentials = {
+    client_id: 'PfSfzRj7UaVnevOYtmYopvGK',
+    client_secret: 'wMzcKq7pgBnvHTqcz0UaW0Vz',
+    grant_type: 'client_credentials',
+    scope: 'DDFApi_Read'
+  };
+
   try {
-    const response = await fetch("https://ddfapi.realtor.ca/odata/Property", {
-      headers: { 'Authorization': `Basic ${DDF_AUTH}` }
+    // Step 1: Get Access Token
+    const tokenResponse = await fetch("https://identity.crea.ca/connect/token", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(credentials)
+    });
+    const tokenData = await tokenResponse.json();
+    const token = tokenData.access_token;
+
+    // Step 2: Fetch Data from DDF
+    const ddfResponse = await fetch("https://ddfapi.realtor.ca/odata/v1/Property", {
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json' 
+      }
     });
     
-    const data = await response.json();
-    const listings = data.value || [];
-
-    const html = `
-      <html>
-        <head>
-          <style>
-            body { font-family: sans-serif; display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; }
-            .card { border: 1px solid #ddd; width: 250px; padding: 10px; border-radius: 8px; }
-            img { width: 100%; border-radius: 4px; }
-            a { display: inline-block; margin-top: 10px; color: blue; text-decoration: none; font-weight: bold; }
-          </style>
-        </head>
-        <body>
-          ${listings.map(item => `
-            <div class="card">
-              <img src="${item.Photo ? item.Photo[0].MediaURL : 'https://via.placeholder.com/250'}">
-              <h3>$${item.Price}</h3>
-              <p>${item.Address}, ${item.City}</p>
-              <a href="/property/${item.ID}">View Details</a>
-            </div>
-          `).join('')}
-        </body>
-      </html>
-    `;
-    res.setHeader('Content-Type', 'text/html');
-    res.status(200).send(html);
-  } catch (err) {
-    res.status(500).send("Error loading listings: " + err.message);
+    const data = await ddfResponse.json();
+    res.status(200).json(data.value);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }
