@@ -1,7 +1,7 @@
 {
   "version": 2,
   "routes": [
-    { "src": "/", "dest": "/api/listings.js" },           // root maps to listings
-    { "src": "/listings/(.*)", "dest": "/api/listings/$1" }  // dynamic detail pages
+    { "src": "/", "dest": "/api/listings.js" },           
+    { "src": "/listings/(.*)", "dest": "/api/listings/$1" }
   ]
 }
