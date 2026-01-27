@@ -1,12 +1,8 @@
 {
-  "name": "listings-app",
+  "name": "crea-ddf-app",
   "version": "1.0.0",
-  "main": "index.js",
   "type": "module",
   "dependencies": {
-    "node-fetch": "^3.4.1"
-  },
-  "scripts": {
-    "start": "vercel dev"
+    "node-fetch": "^3.3.2"
   }
 }
