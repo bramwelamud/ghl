@@ -53,7 +53,7 @@ export default async function handler(req, res) {
               }" />
               <h2>${l.PropertyType} - $${l.Price}</h2>
               <p>${l.Address}, ${l.City}, ${l.Province}</p>
-              <a href="/api/listings/${l.ListingId}">View Details</a>
+              <a href="/listings/${l.ListingId}">View Details</a>
             </div>
           `
             )
