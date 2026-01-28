@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/property/:id",
+      "source": "api/property/:id",
       "destination": "/property.html"
     }
   ],
