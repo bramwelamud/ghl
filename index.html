@@ -4,38 +4,266 @@
     <meta charset="UTF-8">
     <title>Real Estate Listings</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; height: 200px; object-fit: cover; }
-        .content { padding: 15px; }
-        .price { font-size: 1.4em; font-weight: bold; color: #1a73e8; margin-bottom: 5px; }
-        .address { color: #5f6368; font-size: 0.9em; margin-bottom: 15px; }
-        .btn { display: inline-block; background: #1a73e8; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f0f2f5; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 25px; 
+            max-width: 1200px; 
+            margin: auto; 
+        }
+        .card { 
+            background: white; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+        }
+        .card img { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+        }
+        .content { 
+            padding: 20px; 
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .price { 
+            font-size: 1.5em; 
+            font-weight: bold; 
+            color: #1a73e8; 
+            margin-bottom: 5px; 
+        }
+        .address { 
+            color: #5f6368; 
+            font-size: 1em; 
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .property-type {
+            color: #34a853;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #5f6368;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-label {
+            color: #70757a;
+            font-size: 0.85em;
+            margin-bottom: 2px;
+        }
+        .detail-value {
+            font-weight: 500;
+            color: #202124;
+        }
+        .description {
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #5f6368;
+            margin: 15px 0;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .feature-tag {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        .footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn { 
+            display: inline-block; 
+            background: #1a73e8; 
+            color: white; 
+            padding: 10px 20px; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #0d62d9;
+        }
+        .photos-count {
+            color: #5f6368;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .photos-count::before {
+            content: "📷";
+        }
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #34a853;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            z-index: 1;
+        }
+        .image-container {
+            position: relative;
+        }
+        .no-data {
+            color: #9aa0a6;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center; color: #202124;">Current Listings</h1>
+    <h1 style="text-align: center; color: #202124; margin-bottom: 30px;">Current Real Estate Listings</h1>
     <div class="grid" id="listings-grid">Loading properties...</div>
 
     <script>
         async function loadListings() {
-            const res = await fetch('/api/listings');
-            const properties = await res.json();
-            const grid = document.getElementById('listings-grid');
-            
-            grid.innerHTML = properties.map(p => `
-                <div class="card">
-                    <img src="${p.Media?.[0]?.MediaURL || 'https://via.placeholder.com/300x200?text=No+Image'}" alt="Property">
-                    <div class="content">
-                        <div class="price">${p.TotalActualRent ? '$' + p.TotalActualRent : 'Price on Request'}</div>
-                        <div class="address">${p.UnparsedAddress}, ${p.City}</div>
-                        <a href="/property/${p.ListingKey}" class="btn">View Details</a>
-                    </div>
-                </div>
-            `).join('');
+            try {
+               
+                 const res = await fetch('/api/listings');
+                 const properties = await res.json();
+                
+                
+                
+                
+               
+                const grid = document.getElementById('listings-grid');
+                
+                grid.innerHTML = properties.map(p => {
+                    // Format price/rent information
+                    let priceDisplay = 'Price on Request';
+                    if (p.TotalActualRent) {
+                        priceDisplay = `$${p.TotalActualRent}${p.LeaseAmountFrequency ? '/' + p.LeaseAmountFrequency.toLowerCase() : ''}`;
+                    } else if (p.LeaseAmount && p.LeasePerUnit) {
+                        priceDisplay = `$${p.LeaseAmount}/${p.LeasePerUnit}`;
+                    } else if (p.ListPrice) {
+                        priceDisplay = `$${p.ListPrice.toLocaleString()}`;
+                    }
+                    
+                    // Get property type
+                    const propertyType = p.PropertySubType || p.StructureType?.[0] || 'Property';
+                    
+                    // Format living area
+                    const livingArea = p.LivingArea ? 
+                        `${p.LivingArea.toLocaleString()} ${p.LivingAreaUnits || 'sq ft'}` : 
+                        'N/A';
+                    
+                    // Get first image
+                    const firstImage = p.Media?.find(m => m.MediaCategory === 'Property Photo')?.MediaURL || 
+                                     'https://via.placeholder.com/300x200?text=No+Image';
+                    
+                    // Get unique features
+                    const features = [
+                        ...(p.Heating || []),
+                        ...(p.Cooling || []),
+                        ...(p.LotFeatures || []),
+                        ...(p.ParkingFeatures || [])
+                    ].slice(0, 3); // Limit to 3 features
+                    
+                    return `
+                        <div class="card">
+                            <div class="image-container">
+                                ${p.StandardStatus === 'Active' ? '<span class="status-badge">Active</span>' : ''}
+                                <img src="${firstImage}" alt="Property">
+                            </div>
+                            <div class="content">
+                                <div class="price">${priceDisplay}</div>
+                                <div class="address">${p.UnparsedAddress}, ${p.City}</div>
+                                <div class="property-type">${propertyType}</div>
+                                
+                                <div class="details-grid">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Area</span>
+                                        <span class="detail-value">${livingArea}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Zoning</span>
+                                        <span class="detail-value">${p.ZoningDescription || 'N/A'}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Bedrooms</span>
+                                        <span class="detail-value">${p.BedroomsTotal || 'N/A'}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Bathrooms</span>
+                                        <span class="detail-value">${p.BathroomsTotalInteger || 'N/A'}</span>
+                                    </div>
+                                </div>
+                                
+                                ${p.PublicRemarks ? `
+                                    <div class="description">
+                                        ${p.PublicRemarks.substring(0, 150)}...
+                                    </div>
+                                ` : ''}
+                                
+                                ${features.length > 0 ? `
+                                    <div class="features">
+                                        ${features.map(feature => `
+                                            <span class="feature-tag">${feature}</span>
+                                        `).join('')}
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="footer">
+                                    <div class="photos-count">${p.PhotosCount || 0} photos</div>
+                                    <a href="/property/${p.ListingKey}" class="btn">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error loading listings:', error);
+                document.getElementById('listings-grid').innerHTML = 
+                    '<p style="text-align: center; color: #ea4335;">Error loading properties. Please try again.</p>';
+            }
         }
+        
         loadListings();
     </script>
 </body>
