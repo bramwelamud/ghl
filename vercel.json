@@ -1,8 +1,13 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "api/**/*.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "includeFiles": ["api/**/*"]
+      }
     },
     {
       "src": "*.html",
@@ -16,21 +21,20 @@
     },
     {
       "src": "/property/([^/]+)",
-      "dest": "/property.html?id=$1"
+      "dest": "/property.html",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
       "dest": "/$1"
     }
   ],
-  "functions": {
-    "api/listings.js": {
-      "maxDuration": 30
-    },
-    "api/property/[id].js": {
-      "maxDuration": 30
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
@@ -45,7 +49,11 @@
         },
         {
           "key": "Access-Control-Allow-Headers",
-          "value": "Authorization, Content-Type"
+          "value": "Authorization, Content-Type, Accept"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     }
