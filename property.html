@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Property Details</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --background-color: #f8f9fa;
+            --text-color: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dadce0;
+            --card-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-btn {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        
+        .back-btn:hover {
+            background: #f1f3f4;
+        }
+        
+        .property-header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .price {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .address {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .card h2 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--text-color);
+        }
+        
+        .no-data {
+            color: #9aa0a6;
+            font-style: italic;
+        }
+        
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .feature-tag {
+            background: #e8f0fe;
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .photo-item {
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .description {
+            font-size: 1em;
+            line-height: 1.7;
+            color: var(--text-color);
+        }
+        
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+        
+        .meta-value {
+            font-weight: 600;
+            font-size: 1em;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .primary-btn {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .primary-btn:hover {
+            background: #0d62d9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+        
+        .secondary-btn {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .secondary-btn:hover {
+            background: #f1f3f4;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .price {
+                font-size: 1.8em;
+            }
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            font-size: 1.1em;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 60px 20px;
+            color: #ea4335;
+            font-size: 1.1em;
+        }
+        
+        .print-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        
+        .print-btn:hover {
+            background: #3367d6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container header-content">
+            <a href="/" class="back-btn">← Back to Listings</a>
+            <h1>Property Details</h1>
+            <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div id="property-details">
+            <div class="loading">Loading property details...</div>
+        </div>
+    </div>
+
+    <script>
+        // Get property ID from URL
+        function getPropertyId() {
+            const path = window.location.pathname;
+            const segments = path.split('/');
+            return segments[segments.length - 1] || '18629096';
+        }
+        
+        async function loadPropertyDetails() {
+            try {
+                const propertyId = getPropertyId();
+                const container = document.getElementById('property-details');
+                
+               
+                 const res = await fetch(`/api/property/${propertyId}`);
+                 const property = await res.json();
+                
+                
+                const mockProperty = {
+                    "ListingKey": "18629096",
+                    "PropertySubType": "Office",
+                    "TotalActualRent": 15,
+                    "LeaseAmountFrequency": "Monthly",
+                    "UnparsedAddress": "225 METCALFE STREET",
+                    "City": "Ottawa",
+                    "StateOrProvince": "Ontario",
+                    "PostalCode": "K2P1P9",
+                    "PublicRemarks": "Well maintained and updated building in prime downtown area. Steps from Elgin Street, Sobey's, Canal and Parliament Hill. Close to OC Transpo hub, and convienent access to the 417 East/West ramp. On site parking available, and paid parking across the street. Various size units available.",
+                    "LivingArea": 0,
+                    "LivingAreaUnits": "square feet",
+                    "ZoningDescription": "Commercial/Mixed Use",
+                    "BedroomsTotal": null,
+                    "BathroomsTotalInteger": 0,
+                    "StandardStatus": "Active",
+                    "PhotosCount": 2,
+                    "ListingId": "X10402630",
+                    "OriginalEntryTimestamp": "2017-09-09T03:49:50.93Z",
+                    "ModificationTimestamp": "2026-01-05T23:35:13.03Z",
+                    "Directions": "Heading North on Metcalfe, building located on corner of Somerset. Main door access half way between Somerset & Cooper.",
+                    "Latitude": 45.417572,
+                    "Longitude": -75.692627,
+                    "Heating": ["Not known"],
+                    "Cooling": ["Unknown"],
+                    "WaterSource": ["Municipal water"],
+                    "LotFeatures": ["Elevator"],
+                    "ExistingLeaseType": ["Net"],
+                    "StructureType": ["Offices"],
+                    "Media": [
+                        {
+                            "MediaURL": "https://ddfcdn.realtor.ca/listing/TS639032339562930000/reb76/highres/0/x10402630_1.jpg",
+                            "MediaCategory": "Property Photo",
+                            "Order": 1
+                        },
+                        {
+                            "MediaURL": "https://ddfcdn.realtor.ca/listing/TS638697114105630000/reb76/highres/0/x10402630_2.jpg",
+                            "MediaCategory": "Property Photo",
+                            "Order": 2
+                        }
+                    ]
+                };
+                
+                
+                // Format price
+                let priceDisplay = 'Price on Request';
+                let priceLabel = 'Price';
+                
+                if (property.TotalActualRent) {
+                    priceDisplay = `$${property.TotalActualRent}${property.LeaseAmountFrequency ? '/' + property.LeaseAmountFrequency.toLowerCase() : ''}`;
+                    priceLabel = 'Monthly Rent';
+                } else if (property.ListPrice) {
+                    priceDisplay = `$${property.ListPrice.toLocaleString()}`;
+                    priceLabel = 'List Price';
+                }
+                
+                // Format dates
+                const formatDate = (timestamp) => {
+                    if (!timestamp) return 'N/A';
+                    return new Date(timestamp).toLocaleDateString('en-CA', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                };
+                
+                // Get property images
+                const propertyPhotos = property.Media?.filter(m => m.MediaCategory === 'Property Photo') || [];
+                
+                container.innerHTML = `
+                    <div class="property-header">
+                        <div class="price">${priceDisplay}</div>
+                        <div class="address">${property.UnparsedAddress}, ${property.City}, ${property.StateOrProvince} ${property.PostalCode}</div>
+                        <div class="status-badge">${property.StandardStatus || 'Available'}</div>
+                        
+                        <div class="details-grid">
+                            ${property.LivingArea && property.LivingArea > 0 ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Area</span>
+                                    <span class="detail-value">${property.LivingArea.toLocaleString()} ${property.LivingAreaUnits || 'sq ft'}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${property.ZoningDescription ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Zoning</span>
+                                    <span class="detail-value">${property.ZoningDescription}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${property.PropertySubType ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Property Type</span>
+                                    <span class="detail-value">${property.PropertySubType}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${property.ListingId ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Listing ID</span>
+                                    <span class="detail-value">${property.ListingId}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="grid">
+                        <div class="main-content">
+                            <div class="card">
+                                <h2>Description</h2>
+                                <div class="description">
+                                    ${property.PublicRemarks || 'No description available.'}
+                                </div>
+                            </div>
+                            
+                            ${property.Directions ? `
+                                <div class="card">
+                                    <h2>Directions</h2>
+                                    <div class="description">
+                                        ${property.Directions}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="card">
+                                <h2>Property Details</h2>
+                                <div class="details-grid">
+                                    ${property.Heating && property.Heating.length > 0 && !property.Heating.includes('Not known') ? `
+                                        <div class="detail-item">
+                                            <span class="detail-label">Heating</span>
+                                            <span class="detail-value">${property.Heating.join(', ')}</span>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.Cooling && property.Cooling.length > 0 && !property.Cooling.includes('Unknown') ? `
+                                        <div class="detail-item">
+                                            <span class="detail-label">Cooling</span>
+                                            <span class="detail-value">${property.Cooling.join(', ')}</span>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.WaterSource && property.WaterSource.length > 0 ? `
+                                        <div class="detail-item">
+                                            <span class="detail-label">Water Source</span>
+                                            <span class="detail-value">${property.WaterSource.join(', ')}</span>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.ExistingLeaseType && property.ExistingLeaseType.length > 0 ? `
+                                        <div class="detail-item">
+                                            <span class="detail-label">Lease Type</span>
+                                            <span class="detail-value">${property.ExistingLeaseType.join(', ')}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar">
+                            ${property.LotFeatures && property.LotFeatures.length > 0 ? `
+                                <div class="card">
+                                    <h2>Features</h2>
+                                    <div class="features-list">
+                                        ${property.LotFeatures.map(feature => `
+                                            <span class="feature-tag">${feature}</span>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${propertyPhotos.length > 0 ? `
+                                <div class="card">
+                                    <h2>Photos (${propertyPhotos.length})</h2>
+                                    <div class="photo-gallery">
+                                        ${propertyPhotos.map(photo => `
+                                            <div class="photo-item" onclick="openImage('${photo.MediaURL}')">
+                                                <img src="${photo.MediaURL}" alt="Property photo">
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="card">
+                                <h2>Property Information</h2>
+                                <div class="meta-info">
+                                    <div class="meta-item">
+                                        <span class="meta-label">Listed On</span>
+                                        <span class="meta-value">${formatDate(property.OriginalEntryTimestamp)}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Last Updated</span>
+                                        <span class="meta-value">${formatDate(property.ModificationTimestamp)}</span>
+                                    </div>
+                                    ${property.Latitude && property.Longitude ? `
+                                        <div class="meta-item">
+                                            <span class="meta-label">Coordinates</span>
+                                            <span class="meta-value">${property.Latitude.toFixed(6)}, ${property.Longitude.toFixed(6)}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <a href="tel:+15555555555" class="action-btn primary-btn">📞 Contact Agent</a>
+                                <a href="#" class="action-btn secondary-btn" onclick="window.print()">🖨️ Print Details</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading property details:', error);
+                document.getElementById('property-details').innerHTML = 
+                    '<div class="error">Error loading property details. Please try again later.</div>';
+            }
+        }
+        
+        // Helper function to open image in new tab
+        function openImage(url) {
+            window.open(url, '_blank');
+        }
+        
+        // Load property details on page load
+        document.addEventListener('DOMContentLoaded', loadPropertyDetails);
+    </script>
+</body>
+</html>
