@@ -46,7 +46,7 @@ export default async function handler(req, res) {
     console.log('Got token, fetching properties...');
 
     // Get properties
-    const ddfResponse = await fetch("https://ddfapi.realtor.ca/odata/v1/Property?\$top=500", {
+    const ddfResponse = await fetch("https://ddfapi.realtor.ca/odata/v1/Property?\$top=100", {
       headers: { 
         'Authorization': `Bearer ${tokenData.access_token}`,
         'Accept': 'application/json',
