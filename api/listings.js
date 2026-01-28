@@ -1,5 +1,5 @@
 // /api/listings.js
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   // Set CORS headers
