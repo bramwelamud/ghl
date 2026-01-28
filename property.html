@@ -545,11 +545,18 @@
 
     <script>
         // Get property ID from URL
-        function getPropertyId() {
-            const path = window.location.pathname;
-            const segments = path.split('/');
-            return segments[segments.length - 1];
+       function getPropertyId() {
+    // Try to get from path first: /property/123
+    const path = window.location.pathname;
+    const pathSegments = path.split('/');
+    
+    // If path is like /property/123
+    if (pathSegments.length >= 3 && pathSegments[1] === 'property') {
+        const idFromPath = pathSegments[2];
+        if (idFromPath && idFromPath !== 'property.html') {
+            return idFromPath;
         }
+    }
         
         // Format currency
         function formatCurrency(amount) {
