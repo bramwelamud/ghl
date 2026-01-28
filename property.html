@@ -342,7 +342,7 @@
                 const container = document.getElementById('property-details');
                 
                
-                 const res = await fetch(`/api/property/${propertyId}`);
+                 const res = await fetch(`/property/${propertyId}`);
                  const property = await res.json();
                 
                 
@@ -560,7 +560,7 @@
             } catch (error) {
                 console.error('Error loading property details:', error);
                 document.getElementById('property-details').innerHTML = 
-                    '<div class="error">Error loading property details. Please try again later.</div>';
+                    '<div class="error">⚠️ Error loading property details. Please try again later.</div>';
             }
         }
         
