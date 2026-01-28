@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export default async function handler(req, res) {
+async function getPropertyData() {
   const credentials = {
     client_id: 'PfSfzRj7UaVnevOYtmYopvGK',
     client_secret: 'wMzcKq7pgBnvHTqcz0UaW0Vz',
@@ -17,6 +17,7 @@ export default async function handler(req, res) {
     });
     const tokenData = await tokenResponse.json();
     const token = tokenData.access_token;
+    console.log('Token received');
 
     // Step 2: Fetch Data from DDF
     const ddfResponse = await fetch("https://ddfapi.realtor.ca/odata/v1/Property", {
@@ -27,8 +28,15 @@ export default async function handler(req, res) {
     });
     
     const data = await ddfResponse.json();
-    res.status(200).json(data.value);
+    console.log('Properties fetched:', data.value.length);
+    return data.value;
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error:', error.message);
+    throw error;
   }
 }
+
+// Run the function
+getPropertyData()
+  .then(data => console.log('Success!'))
+  .catch(error => console.error('Failed:', error));
