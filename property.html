@@ -8,10 +8,13 @@
         :root {
             --primary: #1a73e8;
             --secondary: #34a853;
+            --accent: #fbbc04;
             --dark: #202124;
             --light: #f8f9fa;
             --gray: #5f6368;
             --border: #dadce0;
+            --card-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --hover-shadow: 0 8px 24px rgba(0,0,0,0.15);
         }
         
         * {
@@ -22,22 +25,25 @@
         
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--light);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
+        /* Header */
         .header {
             background: white;
             padding: 20px 0;
             border-bottom: 1px solid var(--border);
             margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .header-content {
@@ -52,123 +58,143 @@
             gap: 8px;
             color: var(--primary);
             text-decoration: none;
-            font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 6px;
-            transition: background 0.2s;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: #e8f0fe;
+            transition: all 0.3s ease;
         }
         
         .back-btn:hover {
-            background: #f1f3f4;
+            background: var(--primary);
+            color: white;
+            transform: translateX(-5px);
         }
         
-        .property-main {
+        /* Main Layout */
+        .main-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
         
-        .property-card {
+        .card {
             background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
-        .property-images {
-            position: relative;
-            height: 400px;
-            overflow: hidden;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
         }
         
-        .main-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .image-nav {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent);
+            font-size: 1.4em;
             display: flex;
-            justify-content: center;
+            align-items: center;
             gap: 10px;
         }
         
-        .image-dot {
-            width: 10px;
-            height: 10px;
+        .card h2::before {
+            content: "📌";
+        }
+        
+        /* Property Header */
+        .property-header {
+            background: linear-gradient(135deg, var(--primary), #0d62d9);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .property-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        
-        .image-dot.active {
-            background: white;
-        }
-        
-        .property-content {
-            padding: 30px;
+            transform: translate(100px, -100px);
         }
         
         .price-badge {
             display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 1.2em;
-            font-weight: 600;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.6em;
+            font-weight: 700;
             margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
         .address {
-            font-size: 1.8em;
-            font-weight: 600;
+            font-size: 2em;
+            font-weight: 700;
             margin-bottom: 10px;
-            color: var(--dark);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
-        .location {
-            color: var(--gray);
+        .location-info {
             font-size: 1.1em;
+            opacity: 0.9;
             margin-bottom: 20px;
         }
         
-        .status-badge {
-            display: inline-block;
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: var(--secondary);
             color: white;
-            padding: 6px 15px;
+            padding: 8px 20px;
             border-radius: 20px;
-            font-size: 0.9em;
             font-weight: 600;
-            margin-bottom: 25px;
+            margin-right: 15px;
         }
         
+        /* Details Grid */
         .details-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             margin: 25px 0;
         }
         
         .detail-item {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .detail-item:hover {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            transform: translateX(5px);
         }
         
         .detail-label {
             color: var(--gray);
-            font-size: 0.9em;
+            font-size: 0.85em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
         
         .detail-value {
@@ -177,166 +203,333 @@
             color: var(--dark);
         }
         
-        .description {
-            margin: 25px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            line-height: 1.7;
+        .detail-value.highlight {
+            color: var(--primary);
+            font-size: 1.2em;
         }
         
-        .features-grid {
+        /* Features & Tags */
+        .features-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
             margin: 20px 0;
         }
         
-        .feature-item {
-            padding: 12px;
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+        .feature-tag {
+            background: #e8f0fe;
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
             text-align: center;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
         
-        .feature-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .feature-tag:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(26, 115, 232, 0.3);
         }
         
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Photo Gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
         }
         
-        .sidebar-card {
-            background: white;
+        .photo-item {
+            position: relative;
+            height: 150px;
             border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .sidebar-card h3 {
-            margin-bottom: 20px;
+        .photo-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border);
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary);
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background: #f1f3f4;
             color: var(--dark);
         }
         
-        .info-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
         }
         
-        .info-label {
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Map Container */
+        .map-container {
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+        
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+        
+        .timeline-date {
             color: var(--gray);
             font-size: 0.9em;
             margin-bottom: 5px;
         }
         
-        .info-value {
-            font-weight: 500;
-            color: var(--dark);
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
         }
         
+        /* Action Buttons */
         .action-buttons {
             display: flex;
-            flex-direction: column;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
         
         .action-btn {
+            flex: 1;
+            min-width: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 15px;
-            background: var(--primary);
-            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
             text-decoration: none;
-            border-radius: 8px;
             font-weight: 600;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            text-align: center;
         }
         
-        .action-btn:hover {
-            background: #0d62d9;
+        .primary-btn {
+            background: linear-gradient(135deg, var(--primary), #0d62d9);
+            color: white;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
         }
         
-        .action-btn.secondary {
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(26, 115, 232, 0.4);
+        }
+        
+        .secondary-btn {
             background: white;
             color: var(--primary);
             border: 2px solid var(--primary);
         }
         
-        .action-btn.secondary:hover {
+        .secondary-btn:hover {
             background: #f1f3f4;
+            transform: translateY(-3px);
         }
         
-        .gallery {
+        /* Loading & Error States */
+        .loading, .error {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.1em;
+        }
+        
+        .loading {
+            color: var(--gray);
+        }
+        
+        .error {
+            color: #ea4335;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
         }
         
-        .gallery-item {
-            height: 120px;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.2s;
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
         }
         
-        .gallery-item:hover {
-            transform: scale(1.05);
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
         }
         
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 768px) {
-            .property-main {
-                grid-template-columns: 1fr;
+            .property-header {
+                padding: 25px;
+            }
+            
+            .address {
+                font-size: 1.6em;
             }
             
             .details-grid {
                 grid-template-columns: 1fr;
             }
             
-            .property-images {
-                height: 300px;
+            .features-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .photo-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-btn {
+                min-width: 100%;
             }
         }
         
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 1.1em;
-            color: var(--gray);
+        @media (max-width: 480px) {
+            .features-container,
+            .photo-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
         }
         
-        .error {
-            text-align: center;
-            padding: 60px 20px;
-            color: #ea4335;
-            font-size: 1.1em;
+        /* Print Styles */
+        @media print {
+            .header,
+            .action-buttons,
+            .back-btn {
+                display: none;
+            }
+            
+            body {
+                background: white;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="header">
         <div class="container header-content">
             <a href="/" class="back-btn">
-                ← Back to Listings
+                <i class="fas fa-arrow-left"></i> Back to Listings
             </a>
             <h1>Property Details</h1>
         </div>
@@ -344,7 +537,9 @@
     
     <div class="container">
         <div id="property-content">
-            <div class="loading">Loading property details...</div>
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading property details...
+            </div>
         </div>
     </div>
 
@@ -356,252 +551,968 @@
             return segments[segments.length - 1];
         }
         
+        // Format currency
+        function formatCurrency(amount) {
+            if (!amount) return 'N/A';
+            return new Intl.NumberFormat('en-CA', {
+                style: 'currency',
+                currency: 'CAD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        // Format date
+        function formatDate(timestamp) {
+            if (!timestamp) return 'N/A';
+            try {
+                const date = new Date(timestamp);
+                return date.toLocaleDateString('en-CA', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch {
+                return 'Invalid date';
+            }
+        }
+        
+        // Get property type icon
+        function getPropertyIcon(type) {
+            const icons = {
+                'Office': '🏢',
+                'Retail': '🏬',
+                'Single Family': '🏠',
+                'Business': '💼',
+                'Industrial': '🏭',
+                'Commercial': '🏪',
+                'Land': '🌳',
+                'Multi-Family': '🏘️',
+                'Apartment': '🏢'
+            };
+            return icons[type] || '🏠';
+        }
+        
+        // Calculate total images
+        function getTotalImages(property) {
+            return property.Media?.length || 0;
+        }
+        
+        // Calculate property age if year built exists
+        function getPropertyAge(yearBuilt) {
+            if (!yearBuilt) return 'N/A';
+            const currentYear = new Date().getFullYear();
+            const age = currentYear - yearBuilt;
+            return age > 0 ? `${age} years` : 'New';
+        }
+        
+        // Calculate total area with proper formatting
+        function formatArea(area, units) {
+            if (!area || area === 0) return 'N/A';
+            const formatted = area.toLocaleString();
+            return units ? `${formatted} ${units}` : `${formatted} sq ft`;
+        }
+        
+        // Get all unique features
+        function getAllFeatures(property) {
+            const features = new Set();
+            
+            // Add all array features
+            [
+                ...(property.LotFeatures || []),
+                ...(property.Heating || []).filter(h => h && h !== 'Not known'),
+                ...(property.Cooling || []).filter(c => c && c !== 'Unknown'),
+                ...(property.ParkingFeatures || []),
+                ...(property.AccessibilityFeatures || []),
+                ...(property.ExteriorFeatures || []),
+                ...(property.BuildingFeatures || []),
+                ...(property.Appliances || []),
+                ...(property.OtherEquipment || []),
+                ...(property.SecurityFeatures || []),
+                ...(property.FireplaceFeatures || []),
+                ...(property.ArchitecturalStyle || []),
+                ...(property.Flooring || []),
+                ...(property.ConstructionMaterials || []),
+                ...(property.Utilities || []),
+                ...(property.IrrigationSource || []),
+                ...(property.WaterSource || []),
+                ...(property.Sewer || []),
+                ...(property.Electric || []),
+                ...(property.View || []),
+                ...(property.PoolFeatures || []),
+                ...(property.RoadSurfaceType || []),
+                ...(property.WaterfrontFeatures || []),
+                ...(property.CommunityFeatures || [])
+            ].forEach(feature => {
+                if (feature && typeof feature === 'string') {
+                    features.add(feature);
+                }
+            });
+            
+            // Add boolean features
+            if (property.FireplaceYN) features.add('Fireplace');
+            if (property.PropertyAttachedYN) features.add('Attached');
+            if (property.GeocodeManualYN) features.add('Manual Geocode');
+            if (property.InternetEntireListingDisplayYN) features.add('Full Online Listing');
+            if (property.InternetAddressDisplayYN) features.add('Address Displayed Online');
+            
+            // Add numeric features with conditions
+            if (property.ParkingTotal && property.ParkingTotal > 0) {
+                features.add(`${property.ParkingTotal} Parking Spaces`);
+            }
+            
+            if (property.NumberOfBuildings && property.NumberOfBuildings > 0) {
+                features.add(`${property.NumberOfBuildings} Buildings`);
+            }
+            
+            if (property.NumberOfUnitsTotal && property.NumberOfUnitsTotal > 0) {
+                features.add(`${property.NumberOfUnitsTotal} Units`);
+            }
+            
+            return Array.from(features);
+        }
+        
+        // Get property photos
+        function getPropertyPhotos(property) {
+            return property.Media?.filter(m => m.MediaCategory === 'Property Photo') || [];
+        }
+        
+        // Get property documents
+        function getPropertyDocuments(property) {
+            return property.Media?.filter(m => 
+                m.MediaCategory === 'Sales Brochure Website' || 
+                m.MediaCategory === 'Alternate Feature Sheet Website' ||
+                m.MediaCategory === 'Video Tour Website'
+            ) || [];
+        }
+        
+        // Render property details
         async function loadPropertyDetails() {
             try {
                 const propertyId = getPropertyId();
                 const container = document.getElementById('property-content');
                 
+                if (!propertyId) {
+                    throw new Error('Property ID not found in URL');
+                }
+                
                 // Fetch property data from API
                 const response = await fetch(`/api/property/${propertyId}`);
                 
                 if (!response.ok) {
-                    throw new Error('Property not found');
+                    throw new Error(`Failed to fetch property: ${response.status} ${response.statusText}`);
                 }
                 
                 const property = await response.json();
                 
-                // Format price/rent
-                let priceDisplay = 'Price on Request';
-                let priceType = 'Price';
-                
-                if (property.TotalActualRent) {
-                    priceDisplay = `$${property.TotalActualRent}${property.LeaseAmountFrequency ? '/' + property.LeaseAmountFrequency.toLowerCase() : ''}`;
-                    priceType = 'Monthly Rent';
-                } else if (property.LeaseAmount && property.LeasePerUnit) {
-                    priceDisplay = `$${property.LeaseAmount}/${property.LeasePerUnit}`;
-                    priceType = 'Lease Rate';
-                } else if (property.ListPrice) {
-                    priceDisplay = `$${property.ListPrice.toLocaleString()}`;
-                    priceType = 'List Price';
-                }
-                
-                // Format dates
-                const formatDate = (timestamp) => {
-                    if (!timestamp) return 'N/A';
-                    return new Date(timestamp).toLocaleDateString('en-CA', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                };
-                
-                // Get property images
-                const propertyImages = property.Media?.filter(m => m.MediaCategory === 'Property Photo') || [];
-                const mainImage = propertyImages[0]?.MediaURL || 'https://via.placeholder.com/800x400/1a73e8/ffffff?text=Property+Image';
-                
-                // Collect all features
-                const allFeatures = [
-                    ...(property.LotFeatures || []),
-                    ...(property.Heating?.filter(h => h !== 'Not known') || []),
-                    ...(property.Cooling?.filter(c => c !== 'Unknown') || []),
-                    ...(property.ParkingFeatures || []),
-                    ...(property.AccessibilityFeatures || []),
-                    ...(property.ExteriorFeatures || []),
-                    ...(property.BuildingFeatures || [])
-                ].filter(Boolean);
-                
-                container.innerHTML = `
-                    <div class="property-main">
-                        <div class="property-card">
-                            <div class="property-images">
-                                <img src="${mainImage}" alt="Property" class="main-image" id="mainImage">
-                                ${propertyImages.length > 1 ? `
-                                    <div class="image-nav">
-                                        ${propertyImages.map((img, index) => `
-                                            <div class="image-dot ${index === 0 ? 'active' : ''}" 
-                                                 onclick="changeImage('${img.MediaURL}', ${index})"></div>
-                                        `).join('')}
-                                    </div>
-                                ` : ''}
-                            </div>
-                            
-                            <div class="property-content">
-                                <div class="price-badge">${priceDisplay}</div>
-                                <h1 class="address">${property.UnparsedAddress || 'Address not available'}</h1>
-                                <div class="location">
-                                    ${property.City || ''}${property.StateOrProvince ? ', ' + property.StateOrProvince : ''}${property.PostalCode ? ' • ' + property.PostalCode : ''}
-                                </div>
-                                
-                                <div class="status-badge">
-                                    ${property.StandardStatus || 'Available'}
-                                </div>
-                                
-                                <div class="details-grid">
-                                    ${property.LivingArea && property.LivingArea > 0 ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Area</span>
-                                            <span class="detail-value">
-                                                ${property.LivingArea.toLocaleString()} ${property.LivingAreaUnits || 'sq ft'}
-                                            </span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${property.PropertySubType ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Property Type</span>
-                                            <span class="detail-value">${property.PropertySubType}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${property.ZoningDescription ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Zoning</span>
-                                            <span class="detail-value">${property.ZoningDescription}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${(property.BedroomsTotal !== null && property.BedroomsTotal !== undefined) ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Bedrooms</span>
-                                            <span class="detail-value">${property.BedroomsTotal}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${(property.BathroomsTotalInteger !== null && property.BathroomsTotalInteger !== undefined) ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Bathrooms</span>
-                                            <span class="detail-value">${property.BathroomsTotalInteger}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${property.Stories ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Stories</span>
-                                            <span class="detail-value">${property.Stories}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${property.YearBuilt ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Year Built</span>
-                                            <span class="detail-value">${property.YearBuilt}</span>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                                
-                                ${property.PublicRemarks ? `
-                                    <div class="description">
-                                        <h3>Description</h3>
-                                        <p>${property.PublicRemarks}</p>
-                                    </div>
-                                ` : ''}
-                                
-                                ${allFeatures.length > 0 ? `
-                                    <div class="features-grid">
-                                        ${allFeatures.slice(0, 8).map(feature => `
-                                            <div class="feature-item">${feature}</div>
-                                        `).join('')}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                        
-                        <div class="sidebar">
-                            <div class="sidebar-card">
-                                <h3>Property Information</h3>
-                                
-                                ${property.ListingId ? `
-                                    <div class="info-item">
-                                        <div class="info-label">Listing ID</div>
-                                        <div class="info-value">${property.ListingId}</div>
-                                    </div>
-                                ` : ''}
-                                
-                                ${property.OriginalEntryTimestamp ? `
-                                    <div class="info-item">
-                                        <div class="info-label">Listed On</div>
-                                        <div class="info-value">${formatDate(property.OriginalEntryTimestamp)}</div>
-                                    </div>
-                                ` : ''}
-                                
-                                ${property.ModificationTimestamp ? `
-                                    <div class="info-item">
-                                        <div class="info-label">Last Updated</div>
-                                        <div class="info-value">${formatDate(property.ModificationTimestamp)}</div>
-                                    </div>
-                                ` : ''}
-                                
-                                ${property.Latitude && property.Longitude ? `
-                                    <div class="info-item">
-                                        <div class="info-label">Coordinates</div>
-                                        <div class="info-value">${property.Latitude.toFixed(6)}, ${property.Longitude.toFixed(6)}</div>
-                                    </div>
-                                ` : ''}
-                                
-                                ${property.TaxAnnualAmount ? `
-                                    <div class="info-item">
-                                        <div class="info-label">Annual Tax</div>
-                                        <div class="info-value">$${property.TaxAnnualAmount.toLocaleString()}</div>
-                                    </div>
-                                ` : ''}
-                                
-                                <div class="action-buttons">
-                                    ${property.ListingURL ? `
-                                        <a href="${property.ListingURL}" target="_blank" class="action-btn">
-                                            📄 View Original Listing
-                                        </a>
-                                    ` : ''}
-                                    <a href="tel:+15555555555" class="action-btn secondary">
-                                        📞 Contact Agent
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            ${propertyImages.length > 1 ? `
-                                <div class="sidebar-card">
-                                    <h3>Photo Gallery (${propertyImages.length})</h3>
-                                    <div class="gallery">
-                                        ${propertyImages.slice(0, 6).map((img, index) => `
-                                            <div class="gallery-item" onclick="changeImage('${img.MediaURL}', ${index})">
-                                                <img src="${img.MediaURL}" alt="Property photo ${index + 1}">
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            ` : ''}
-                            
-                            ${property.Directions ? `
-                                <div class="sidebar-card">
-                                    <h3>Directions</h3>
-                                    <p>${property.Directions}</p>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
+                // Render the property details
+                renderPropertyDetails(property);
                 
             } catch (error) {
                 console.error('Error loading property:', error);
                 document.getElementById('property-content').innerHTML = `
                     <div class="error">
-                        <h2>⚠️ Unable to load property details</h2>
+                        <h2><i class="fas fa-exclamation-triangle"></i> Unable to load property details</h2>
                         <p>${error.message}</p>
                         <p style="margin-top: 20px;">
-                            <a href="/" class="back-btn">← Return to listings</a>
+                            <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> Return to listings</a>
                         </p>
                     </div>
                 `;
             }
         }
         
-        // Function to change main image
-        function changeImage(url, index) {
-            document.getElementById('mainImage').src = url;
+        function renderPropertyDetails(property) {
+            const container = document.getElementById('property-content');
             
-            // Update active dot
-            document.querySelectorAll('.image-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
+            // Format price/rent
+            let priceDisplay = 'Price on Request';
+            let priceType = 'Price';
+            
+            if (property.TotalActualRent) {
+                priceDisplay = `$${property.TotalActualRent}${property.LeaseAmountFrequency ? '/' + property.LeaseAmountFrequency.toLowerCase() : ''}`;
+                priceType = 'Monthly Rent';
+            } else if (property.LeaseAmount && property.LeasePerUnit) {
+                priceDisplay = `$${property.LeaseAmount}/${property.LeasePerUnit}`;
+                priceType = 'Lease Rate';
+            } else if (property.ListPrice) {
+                priceDisplay = formatCurrency(property.ListPrice);
+                priceType = 'List Price';
+            }
+            
+            // Get all data
+            const features = getAllFeatures(property);
+            const photos = getPropertyPhotos(property);
+            const documents = getPropertyDocuments(property);
+            const propertyIcon = getPropertyIcon(property.PropertySubType);
+            const totalImages = getTotalImages(property);
+            const propertyAge = getPropertyAge(property.YearBuilt);
+            const formattedArea = formatArea(property.LivingArea, property.LivingAreaUnits);
+            
+            // Determine property type display
+            const propertyTypeDisplay = property.PropertySubType || 
+                                       property.StructureType?.[0] || 
+                                       property.BusinessType?.[0] || 
+                                       'Property';
+            
+            container.innerHTML = `
+                <!-- Property Header -->
+                <div class="property-header">
+                    <div class="price-badge">${priceDisplay}</div>
+                    <h1 class="address">${propertyIcon} ${property.UnparsedAddress || 'Address not available'}</h1>
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        ${property.City || ''}${property.StateOrProvince ? ', ' + property.StateOrProvince : ''}
+                        ${property.PostalCode ? ' • ' + property.PostalCode : ''}
+                        ${property.Country ? ' • ' + property.Country : ''}
+                    </div>
+                    <div>
+                        <span class="status-chip">
+                            <i class="fas fa-badge-check"></i> ${property.StandardStatus || 'Available'}
+                        </span>
+                        <span class="status-chip">
+                            <i class="fas fa-tag"></i> ${propertyTypeDisplay}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Tabs Navigation -->
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('overview')">
+                        <i class="fas fa-home"></i> Overview
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('details')">
+                        <i class="fas fa-info-circle"></i> Details
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('photos')">
+                        <i class="fas fa-camera"></i> Photos (${photos.length})
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('location')">
+                        <i class="fas fa-map"></i> Location
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('timeline')">
+                        <i class="fas fa-history"></i> Timeline
+                    </button>
+                </div>
+                
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content active">
+                    <div class="main-grid">
+                        <!-- Left Column -->
+                        <div>
+                            <!-- Key Stats -->
+                            <div class="card">
+                                <h2><i class="fas fa-chart-bar"></i> Property Statistics</h2>
+                                <div class="stats-grid">
+                                    ${property.LivingArea && property.LivingArea > 0 ? `
+                                        <div class="stat-card">
+                                            <div class="stat-value">${property.LivingArea.toLocaleString()}</div>
+                                            <div class="stat-label">Square Feet</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.TaxAnnualAmount ? `
+                                        <div class="stat-card">
+                                            <div class="stat-value">${formatCurrency(property.TaxAnnualAmount)}</div>
+                                            <div class="stat-label">Annual Taxes</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.PhotosCount ? `
+                                        <div class="stat-card">
+                                            <div class="stat-value">${property.PhotosCount}</div>
+                                            <div class="stat-label">Photos</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.YearBuilt ? `
+                                        <div class="stat-card">
+                                            <div class="stat-value">${property.YearBuilt}</div>
+                                            <div class="stat-label">Year Built</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <!-- Description -->
+                            ${property.PublicRemarks ? `
+                                <div class="card">
+                                    <h2><i class="fas fa-file-alt"></i> Description</h2>
+                                    <p style="font-size: 1.1em; line-height: 1.8;">${property.PublicRemarks}</p>
+                                </div>
+                            ` : ''}
+                            
+                            <!-- Key Details -->
+                            <div class="card">
+                                <h2><i class="fas fa-key"></i> Key Details</h2>
+                                <div class="details-grid">
+                                    ${formattedArea !== 'N/A' ? `
+                                        <div class="detail-item">
+                                            <div class="detail-label">Total Area</div>
+                                            <div class="detail-value highlight">${formattedArea}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.ZoningDescription ? `
+                                        <div class="detail-item">
+                                            <div class="detail-label">Zoning</div>
+                                            <div class="detail-value">${property.ZoningDescription}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.ExistingLeaseType?.length > 0 ? `
+                                        <div class="detail-item">
+                                            <div class="detail-label">Lease Type</div>
+                                            <div class="detail-value">${property.ExistingLeaseType.join(', ')}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.CommonInterest ? `
+                                        <div class="detail-item">
+                                            <div class="detail-label">Interest Type</div>
+                                            <div class="detail-value">${property.CommonInterest}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${property.PropertyCondition?.length > 0 ? `
+                                        <div class="detail-item">
+                                            <div class="detail-label">Condition</div>
+                                            <div class="detail-value">${property.PropertyCondition.join(', ')}</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div>
+                            <!-- Features -->
+                            ${features.length > 0 ? `
+                                <div class="card">
+                                    <h2><i class="fas fa-star"></i> Features & Amenities</h2>
+                                    <div class="features-container">
+                                        ${features.slice(0, 12).map(feature => `
+                                            <div class="feature-tag">${feature}</div>
+                                        `).join('')}
+                                    </div>
+                                    ${features.length > 12 ? `
+                                        <p style="margin-top: 15px; color: var(--gray); font-size: 0.9em;">
+                                            + ${features.length - 12} more features
+                                        </p>
+                                    ` : ''}
+                                </div>
+                            ` : ''}
+                            
+                            <!-- Contact & Actions -->
+                            <div class="card">
+                                <h2><i class="fas fa-phone-alt"></i> Contact & Actions</h2>
+                                <div class="action-buttons">
+                                    ${property.ListingURL ? `
+                                        <a href="${property.ListingURL}" target="_blank" class="action-btn primary-btn">
+                                            <i class="fas fa-external-link-alt"></i> View Original Listing
+                                        </a>
+                                    ` : ''}
+                                    
+                                    <a href="tel:+15555555555" class="action-btn secondary-btn">
+                                        <i class="fas fa-phone"></i> Contact Agent
+                                    </a>
+                                    
+                                    <button onclick="window.print()" class="action-btn secondary-btn">
+                                        <i class="fas fa-print"></i> Print Details
+                                    </button>
+                                    
+                                    <button onclick="shareProperty()" class="action-btn secondary-btn">
+                                        <i class="fas fa-share-alt"></i> Share
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Details Tab -->
+                <div id="details-tab" class="tab-content">
+                    <div class="card">
+                        <h2><i class="fas fa-clipboard-list"></i> Complete Property Details</h2>
+                        
+                        <!-- Property Information -->
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                                <i class="fas fa-info-circle"></i> Property Information
+                            </h3>
+                            <div class="details-grid">
+                                ${property.ListingId ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Listing ID</div>
+                                        <div class="detail-value">${property.ListingId}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.ListingKey ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Listing Key</div>
+                                        <div class="detail-value">${property.ListingKey}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.OriginatingSystemName ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Board/System</div>
+                                        <div class="detail-value">${property.OriginatingSystemName}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.ListAOR ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Association/Board</div>
+                                        <div class="detail-value">${property.ListAOR} (${property.ListAORKey || ''})</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.CityRegion ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">City Region</div>
+                                        <div class="detail-value">${property.CityRegion}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.SubdivisionName ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Subdivision</div>
+                                        <div class="detail-value">${property.SubdivisionName}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        
+                        <!-- Financial Details -->
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                                <i class="fas fa-dollar-sign"></i> Financial Details
+                            </h3>
+                            <div class="details-grid">
+                                ${property.TaxAnnualAmount ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Annual Property Tax</div>
+                                        <div class="detail-value highlight">${formatCurrency(property.TaxAnnualAmount)}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.TaxYear ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Tax Year</div>
+                                        <div class="detail-value">${property.TaxYear}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.TaxBlock ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Tax Block</div>
+                                        <div class="detail-value">${property.TaxBlock}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.TaxLot ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Tax Lot</div>
+                                        <div class="detail-value">${property.TaxLot}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.AssociationFee ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Association Fee</div>
+                                        <div class="detail-value">${formatCurrency(property.AssociationFee)}${property.AssociationFeeFrequency ? '/' + property.AssociationFeeFrequency.toLowerCase() : ''}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.AssociationName ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Association Name</div>
+                                        <div class="detail-value">${property.AssociationName}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        
+                        <!-- Physical Characteristics -->
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                                <i class="fas fa-ruler-combined"></i> Physical Characteristics
+                            </h3>
+                            <div class="details-grid">
+                                ${property.Stories ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Stories</div>
+                                        <div class="detail-value">${property.Stories}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.BedroomsTotal !== null && property.BedroomsTotal !== undefined ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Total Bedrooms</div>
+                                        <div class="detail-value">${property.BedroomsTotal}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.BedroomsAboveGrade !== null && property.BedroomsAboveGrade !== undefined ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Bedrooms Above Grade</div>
+                                        <div class="detail-value">${property.BedroomsAboveGrade}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.BedroomsBelowGrade !== null && property.BedroomsBelowGrade !== undefined ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Bedrooms Below Grade</div>
+                                        <div class="detail-value">${property.BedroomsBelowGrade}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.BathroomsTotalInteger !== null && property.BathroomsTotalInteger !== undefined ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Total Bathrooms</div>
+                                        <div class="detail-value">${property.BathroomsTotalInteger}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.BathroomsPartial !== null && property.BathroomsPartial !== undefined ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Partial Bathrooms</div>
+                                        <div class="detail-value">${property.BathroomsPartial}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.FireplacesTotal ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Fireplaces</div>
+                                        <div class="detail-value">${property.FireplacesTotal}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.FireplaceYN ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Has Fireplace</div>
+                                        <div class="detail-value">Yes</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        
+                        <!-- Lot & Land Details -->
+                        <div style="margin-bottom: 30px;">
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                                <i class="fas fa-expand-arrows-alt"></i> Lot & Land Details
+                            </h3>
+                            <div class="details-grid">
+                                ${property.LotSizeArea ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Lot Area</div>
+                                        <div class="detail-value">${property.LotSizeArea} ${property.LotSizeUnits || 'units'}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.LotSizeDimensions ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Lot Dimensions</div>
+                                        <div class="detail-value">${property.LotSizeDimensions}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.FrontageLengthNumeric ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Frontage Length</div>
+                                        <div class="detail-value">${property.FrontageLengthNumeric} ${property.FrontageLengthNumericUnits || 'units'}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.ParcelNumber ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Parcel Number</div>
+                                        <div class="detail-value">${property.ParcelNumber}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.WaterBodyName ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Water Body</div>
+                                        <div class="detail-value">${property.WaterBodyName}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.AnchorsCoTenants ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Anchors/Co-Tenants</div>
+                                        <div class="detail-value">${property.AnchorsCoTenants}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Information -->
+                        <div>
+                            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                                <i class="fas fa-ellipsis-h"></i> Additional Information
+                            </h3>
+                            <div class="details-grid">
+                                ${property.CurrentUse?.length > 0 ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Current Use</div>
+                                        <div class="detail-value">${property.CurrentUse.join(', ')}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.PossibleUse?.length > 0 ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Possible Use</div>
+                                        <div class="detail-value">${property.PossibleUse.join(', ')}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.Inclusions ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Inclusions</div>
+                                        <div class="detail-value">${property.Inclusions}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.DocumentsAvailable?.length > 0 ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Available Documents</div>
+                                        <div class="detail-value">${property.DocumentsAvailable.join(', ')}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photos Tab -->
+                <div id="photos-tab" class="tab-content">
+                    <div class="card">
+                        <h2><i class="fas fa-images"></i> Property Photos (${photos.length})</h2>
+                        
+                        ${photos.length > 0 ? `
+                            <div class="photo-gallery">
+                                ${photos.map((photo, index) => `
+                                    <div class="photo-item" onclick="openLightbox('${photo.MediaURL}', ${index})">
+                                        <img src="${photo.MediaURL}" alt="Property photo ${index + 1}" loading="lazy">
+                                        ${photo.PreferredPhotoYN ? `
+                                            <div style="position: absolute; top: 10px; right: 10px; background: var(--accent); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8em;">
+                                                <i class="fas fa-star"></i> Featured
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <!-- Photo Metadata -->
+                            <div style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                                <h3 style="color: var(--primary); margin-bottom: 10px;">
+                                    <i class="fas fa-info-circle"></i> Photo Information
+                                </h3>
+                                <p>Total photos: <strong>${photos.length}</strong></p>
+                                ${property.PhotosChangeTimestamp ? `
+                                    <p>Last updated: <strong>${formatDate(property.PhotosChangeTimestamp)}</strong></p>
+                                ` : ''}
+                            </div>
+                        ` : `
+                            <div style="text-align: center; padding: 40px; color: var(--gray);">
+                                <i class="fas fa-camera fa-3x" style="margin-bottom: 20px;"></i>
+                                <h3>No photos available for this property</h3>
+                            </div>
+                        `}
+                    </div>
+                    
+                    <!-- Documents Section -->
+                    ${documents.length > 0 ? `
+                        <div class="card" style="margin-top: 30px;">
+                            <h2><i class="fas fa-file-pdf"></i> Property Documents (${documents.length})</h2>
+                            <div class="details-grid">
+                                ${documents.map((doc, index) => `
+                                    <div class="detail-item">
+                                        <div class="detail-label">${doc.MediaCategory || 'Document'} ${index + 1}</div>
+                                        <div class="detail-value">
+                                            <a href="${doc.MediaURL}" target="_blank" style="color: var(--primary); text-decoration: none;">
+                                                <i class="fas fa-external-link-alt"></i> View Document
+                                            </a>
+                                        </div>
+                                        ${doc.LongDescription ? `
+                                            <p style="margin-top: 5px; font-size: 0.9em; color: var(--gray);">
+                                                ${doc.LongDescription}
+                                            </p>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+                
+                <!-- Location Tab -->
+                <div id="location-tab" class="tab-content">
+                    <div class="card">
+                        <h2><i class="fas fa-map-marked-alt"></i> Location Details</h2>
+                        
+                        ${property.Directions ? `
+                            <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                                <h3 style="color: var(--primary); margin-bottom: 10px;">
+                                    <i class="fas fa-directions"></i> Directions
+                                </h3>
+                                <p>${property.Directions}</p>
+                            </div>
+                        ` : ''}
+                        
+                        <!-- Map Coordinates -->
+                        <div class="card">
+                            <h3><i class="fas fa-globe-americas"></i> Geographic Coordinates</h3>
+                            <div class="details-grid">
+                                ${property.Latitude ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Latitude</div>
+                                        <div class="detail-value">${property.Latitude.toFixed(6)}°</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.Longitude ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Longitude</div>
+                                        <div class="detail-value">${property.Longitude.toFixed(6)}°</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.MapCoordinateVerifiedYN !== null ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Coordinates Verified</div>
+                                        <div class="detail-value">${property.MapCoordinateVerifiedYN ? 'Yes' : 'No'}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.GeocodeManualYN !== null ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Geocode Type</div>
+                                        <div class="detail-value">${property.GeocodeManualYN ? 'Manual' : 'Automatic'}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            
+                            <!-- Map Visualization -->
+                            <div class="map-container">
+                                ${property.Latitude && property.Longitude ? `
+                                    <div style="text-align: center;">
+                                        <i class="fas fa-map fa-3x" style="color: var(--primary); margin-bottom: 15px;"></i>
+                                        <p>Latitude: ${property.Latitude.toFixed(6)}°</p>
+                                        <p>Longitude: ${property.Longitude.toFixed(6)}°</p>
+                                        <a href="https://www.google.com/maps?q=${property.Latitude},${property.Longitude}" 
+                                           target="_blank" 
+                                           style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 6px;">
+                                            <i class="fas fa-map-marker-alt"></i> Open in Google Maps
+                                        </a>
+                                    </div>
+                                ` : `
+                                    <div style="text-align: center;">
+                                        <i class="fas fa-map fa-3x" style="color: var(--gray); margin-bottom: 15px;"></i>
+                                        <p>No location coordinates available</p>
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                        
+                        <!-- Address Breakdown -->
+                        <div class="card" style="margin-top: 20px;">
+                            <h3><i class="fas fa-address-card"></i> Complete Address</h3>
+                            <div class="details-grid">
+                                ${property.StreetNumber ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Street Number</div>
+                                        <div class="detail-value">${property.StreetNumber}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.StreetName ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Street Name</div>
+                                        <div class="detail-value">${property.StreetName}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.StreetSuffix ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Street Type</div>
+                                        <div class="detail-value">${property.StreetSuffix}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.StreetDirPrefix ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Direction Prefix</div>
+                                        <div class="detail-value">${property.StreetDirPrefix}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.StreetDirSuffix ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Direction Suffix</div>
+                                        <div class="detail-value">${property.StreetDirSuffix}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${property.UnitNumber ? `
+                                    <div class="detail-item">
+                                        <div class="detail-label">Unit Number</div>
+                                        <div class="detail-value">${property.UnitNumber}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timeline Tab -->
+                <div id="timeline-tab" class="tab-content">
+                    <div class="card">
+                        <h2><i class="fas fa-stream"></i> Property Timeline</h2>
+                        
+                        <div class="timeline">
+                            ${property.OriginalEntryTimestamp ? `
+                                <div class="timeline-item">
+                                    <div class="timeline-date">
+                                        <i class="fas fa-calendar-plus"></i> ${formatDate(property.OriginalEntryTimestamp)}
+                                    </div>
+                                    <div class="timeline-content">
+                                        <strong>Property Listed</strong>
+                                        <p>Property was first entered into the system</p>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${property.StatusChangeTimestamp ? `
+                                <div class="timeline-item">
+                                    <div class="timeline-date">
+                                        <i class="fas fa-sync-alt"></i> ${formatDate(property.StatusChangeTimestamp)}
+                                    </div>
+                                    <div class="timeline-content">
+                                        <strong>Status Changed</strong>
+                                        <p>Property status updated to: ${property.StandardStatus || 'Unknown'}</p>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${property.ModificationTimestamp ? `
+                                <div class="timeline-item">
+                                    <div class="timeline-date">
+                                        <i class="fas fa-edit"></i> ${formatDate(property.ModificationTimestamp)}
+                                    </div>
+                                    <div class="timeline-content">
+                                        <strong>Last Updated</strong>
+                                        <p>Property information was last modified</p>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${property.PhotosChangeTimestamp ? `
+                                <div class="timeline-item">
+                                    <div class="timeline-date">
+                                        <i class="fas fa-camera-retro"></i> ${formatDate(property.PhotosChangeTimestamp)}
+                                    </div>
+                                    <div class="timeline-content">
+                                        <strong>Photos Updated</strong>
+                                        <p>Property photos were last updated</p>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Tab switching function
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
             });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // Activate selected tab button
+            event.target.classList.add('active');
+        }
+        
+        // Lightbox function for photos
+        function openLightbox(imageUrl, index) {
+            // Create lightbox
+            const lightbox = document.createElement('div');
+            lightbox.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                cursor: pointer;
+            `;
+            
+            lightbox.innerHTML = `
+                <div style="position: relative; max-width: 90%; max-height: 90%;">
+                    <img src="${imageUrl}" 
+                         alt="Property photo" 
+                         style="max-width: 100%; max-height: 90vh; border-radius: 8px;">
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer;">
+                        ×
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(lightbox);
+            
+            // Close on click
+            lightbox.onclick = (e) => {
+                if (e.target === lightbox) {
+                    lightbox.remove();
+                }
+            };
+            
+            // Close on Escape key
+            document.addEventListener('keydown', function closeOnEscape(e) {
+                if (e.key === 'Escape') {
+                    lightbox.remove();
+                    document.removeEventListener('keydown', closeOnEscape);
+                }
+            });
+        }
+        
+        // Share property function
+        function shareProperty() {
+            const url = window.location.href;
+            const title = document.querySelector('.address').textContent;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: 'Check out this property listing',
+                    url: url
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
         }
         
         // Load property details on page load
