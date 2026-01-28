@@ -221,140 +221,139 @@
 
     <script>
         async function loadListings() {
-            try {
-                const grid = document.getElementById('listings-grid');
-                
-                // In real app, fetch from API
-                 const res = await fetch('/api/listings');
-                const properties = await res.json();
-                
-                
-                    }
-                    // Add more properties as needed
-                ];
-                
-               // const properties = mockProperties; // Replace with actual API data
-                
-                if (!properties || properties.length === 0) {
-                    grid.innerHTML = '<div class="error">No properties found</div>';
-                    return;
-                }
-                
-                grid.innerHTML = properties.map(p => {
-                    // Format price/rent information
-                    let priceDisplay = 'Price on Request';
-                    let priceLabel = 'Price';
-                    
-                    if (p.TotalActualRent) {
-                        priceDisplay = `$${p.TotalActualRent}${p.LeaseAmountFrequency ? '/' + p.LeaseAmountFrequency.toLowerCase() : ''}`;
-                        priceLabel = 'Rent';
-                    } else if (p.ListPrice) {
-                        priceDisplay = `$${p.ListPrice.toLocaleString()}`;
-                        priceLabel = 'Price';
-                    }
-                    
-                    // Get property type
-                    const propertyType = p.PropertySubType || p.StructureType?.[0] || 'Property';
-                    
-                    // Format living area - only show if > 0
-                    let livingAreaDisplay = '';
-                    if (p.LivingArea && p.LivingArea > 0) {
-                        livingAreaDisplay = `${p.LivingArea.toLocaleString()} ${p.LivingAreaUnits || 'sq ft'}`;
-                    }
-                    
-                    // Get first image
-                    const firstImage = p.Media?.find(m => m.MediaCategory === 'Property Photo')?.MediaURL || 
-                                     'https://via.placeholder.com/400x250/1a73e8/ffffff?text=Property+Image';
-                    
-                    // Collect features that have data
-                    const features = [];
-                    if (p.LotFeatures && p.LotFeatures.length > 0) {
-                        features.push(...p.LotFeatures.slice(0, 2));
-                    }
-                    if (p.Heating && p.Heating.length > 0 && !p.Heating.includes('Not known')) {
-                        features.push(...p.Heating.slice(0, 1));
-                    }
-                    
-                    return `
-                        <div class="card">
-                            <div class="image-container">
-                                <div class="status-badge ${p.StandardStatus !== 'Active' ? 'inactive-badge' : ''}">
-                                    ${p.StandardStatus || 'Available'}
-                                </div>
-                                <img src="${firstImage}" alt="${propertyType} in ${p.City}">
-                            </div>
-                            <div class="content">
-                                <div class="price">${priceDisplay}</div>
-                                <div class="address">${p.UnparsedAddress || 'Address not specified'}, ${p.City || ''}</div>
-                                <span class="property-type">${propertyType}</span>
-                                
-                                <div class="details-grid">
-                                    ${livingAreaDisplay ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Area</span>
-                                            <span class="detail-value">${livingAreaDisplay}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${p.ZoningDescription ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Zoning</span>
-                                            <span class="detail-value">${p.ZoningDescription}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${(p.BedroomsTotal !== null && p.BedroomsTotal !== undefined) ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Bedrooms</span>
-                                            <span class="detail-value">${p.BedroomsTotal}</span>
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${(p.BathroomsTotalInteger !== null && p.BathroomsTotalInteger !== undefined) ? `
-                                        <div class="detail-item">
-                                            <span class="detail-label">Bathrooms</span>
-                                            <span class="detail-value">${p.BathroomsTotalInteger}</span>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                                
-                                ${p.PublicRemarks ? `
-                                    <div class="description">
-                                        ${p.PublicRemarks.length > 120 ? p.PublicRemarks.substring(0, 120) + '...' : p.PublicRemarks}
-                                    </div>
-                                ` : ''}
-                                
-                                ${features.length > 0 ? `
-                                    <div class="features">
-                                        ${features.map(feature => `
-                                            <span class="feature-tag">${feature}</span>
-                                        `).join('')}
-                                    </div>
-                                ` : ''}
-                                
-                                <div class="footer">
-                                    <div class="meta-info">
-                                        ${p.PhotosCount > 0 ? `
-                                            <div class="meta-item photos-count">${p.PhotosCount}</div>
-                                        ` : ''}
-                                        ${p.ListingId ? `
-                                            <div class="meta-item listing-id">${p.ListingId}</div>
-                                        ` : ''}
-                                    </div>
-                                    <a href="/property/${p.ListingKey}" class="btn">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-            } catch (error) {
-                console.error('Error loading listings:', error);
-                document.getElementById('listings-grid').innerHTML = 
-                    '<div class="error">⚠️ Error loading properties. Please try again later.</div>';
-            }
+    try {
+        const grid = document.getElementById('listings-grid');
+        
+        // In real app, fetch from API
+        const res = await fetch('/api/listings');
+        const properties = await res.json();
+        
+        // Remove this mock data - using actual API response
+        // const mockProperties = [
+        //     // Add more properties as needed
+        // ];
+        
+        // const properties = mockProperties; // Replace with actual API data
+        
+        if (!properties || properties.length === 0) {
+            grid.innerHTML = '<div class="error">No properties found</div>';
+            return;
         }
         
+        grid.innerHTML = properties.map(p => {
+            // Format price/rent information
+            let priceDisplay = 'Price on Request';
+            let priceLabel = 'Price';
+            
+            if (p.TotalActualRent) {
+                priceDisplay = `$${p.TotalActualRent}${p.LeaseAmountFrequency ? '/' + p.LeaseAmountFrequency.toLowerCase() : ''}`;
+                priceLabel = 'Rent';
+            } else if (p.ListPrice) {
+                priceDisplay = `$${p.ListPrice.toLocaleString()}`;
+                priceLabel = 'Price';
+            }
+            
+            // Get property type
+            const propertyType = p.PropertySubType || p.StructureType?.[0] || 'Property';
+            
+            // Format living area - only show if > 0
+            let livingAreaDisplay = '';
+            if (p.LivingArea && p.LivingArea > 0) {
+                livingAreaDisplay = `${p.LivingArea.toLocaleString()} ${p.LivingAreaUnits || 'sq ft'}`;
+            }
+            
+            // Get first image
+            const firstImage = p.Media?.find(m => m.MediaCategory === 'Property Photo')?.MediaURL || 
+                             'https://via.placeholder.com/400x250/1a73e8/ffffff?text=Property+Image';
+            
+            // Collect features that have data
+            const features = [];
+            if (p.LotFeatures && p.LotFeatures.length > 0) {
+                features.push(...p.LotFeatures.slice(0, 2));
+            }
+            if (p.Heating && p.Heating.length > 0 && !p.Heating.includes('Not known')) {
+                features.push(...p.Heating.slice(0, 1));
+            }
+            
+            return `
+                <div class="card">
+                    <div class="image-container">
+                        <div class="status-badge ${p.StandardStatus !== 'Active' ? 'inactive-badge' : ''}">
+                            ${p.StandardStatus || 'Available'}
+                        </div>
+                        <img src="${firstImage}" alt="${propertyType} in ${p.City}">
+                    </div>
+                    <div class="content">
+                        <div class="price">${priceDisplay}</div>
+                        <div class="address">${p.UnparsedAddress || 'Address not specified'}, ${p.City || ''}</div>
+                        <span class="property-type">${propertyType}</span>
+                        
+                        <div class="details-grid">
+                            ${livingAreaDisplay ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Area</span>
+                                    <span class="detail-value">${livingAreaDisplay}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${p.ZoningDescription ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Zoning</span>
+                                    <span class="detail-value">${p.ZoningDescription}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${(p.BedroomsTotal !== null && p.BedroomsTotal !== undefined) ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Bedrooms</span>
+                                    <span class="detail-value">${p.BedroomsTotal}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${(p.BathroomsTotalInteger !== null && p.BathroomsTotalInteger !== undefined) ? `
+                                <div class="detail-item">
+                                    <span class="detail-label">Bathrooms</span>
+                                    <span class="detail-value">${p.BathroomsTotalInteger}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        ${p.PublicRemarks ? `
+                            <div class="description">
+                                ${p.PublicRemarks.length > 120 ? p.PublicRemarks.substring(0, 120) + '...' : p.PublicRemarks}
+                            </div>
+                        ` : ''}
+                        
+                        ${features.length > 0 ? `
+                            <div class="features">
+                                ${features.map(feature => `
+                                    <span class="feature-tag">${feature}</span>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        
+                        <div class="footer">
+                            <div class="meta-info">
+                                ${p.PhotosCount > 0 ? `
+                                    <div class="meta-item photos-count">${p.PhotosCount}</div>
+                                ` : ''}
+                                ${p.ListingId ? `
+                                    <div class="meta-item listing-id">${p.ListingId}</div>
+                                ` : ''}
+                            </div>
+                            <a href="/property/${p.ListingKey}" class="btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+    } catch (error) {
+        console.error('Error loading listings:', error);
+        document.getElementById('listings-grid').innerHTML = 
+            '<div class="error">⚠️ Error loading properties. Please try again later.</div>';
+    }
+}
         // Load listings on page load
         document.addEventListener('DOMContentLoaded', loadListings);
         
