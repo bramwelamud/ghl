@@ -1,10 +1,9 @@
 {
-  "rewrites": [
-    {
-      "source": "api/property/:id",
-      "destination": "/property.html"
+  "functions": {
+    "api/listings.js": {
+      "maxDuration": 30
     }
-  ],
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -20,6 +19,19 @@
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
       ]
     }
