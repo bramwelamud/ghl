@@ -154,15 +154,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-        }
-        .meta-item::before {
-            font-size: 1.1em;
-        }
-        .photos-count::before {
-            content: "📷";
-        }
-        .listing-id::before {
-            content: "🔑";
+            font-size: 0.9em;
         }
         .status-badge {
             position: absolute;
@@ -211,7 +203,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>🏢 Premium Real Estate Listings</h1>
+        <h1>Premium Real Estate Listings</h1>
         <p>Discover commercial and residential properties across Ontario</p>
     </div>
     
@@ -224,16 +216,14 @@
             try {
                 const grid = document.getElementById('listings-grid');
                 
-                // In real app, fetch from API
-                 const res = await fetch('/api/listings');
+                // Fetch from API
+                const res = await fetch('/api/listings');
+                
+                if (!res.ok) {
+                    throw new Error(`API request failed with status ${res.status}`);
+                }
+                
                 const properties = await res.json();
-                
-                
-                    }
-                    // Add more properties as needed
-                ];
-                
-               // const properties = mockProperties; // Replace with actual API data
                 
                 if (!properties || properties.length === 0) {
                     grid.innerHTML = '<div class="error">No properties found</div>';
@@ -243,18 +233,17 @@
                 grid.innerHTML = properties.map(p => {
                     // Format price/rent information
                     let priceDisplay = 'Price on Request';
-                    let priceLabel = 'Price';
                     
                     if (p.TotalActualRent) {
                         priceDisplay = `$${p.TotalActualRent}${p.LeaseAmountFrequency ? '/' + p.LeaseAmountFrequency.toLowerCase() : ''}`;
-                        priceLabel = 'Rent';
                     } else if (p.ListPrice) {
                         priceDisplay = `$${p.ListPrice.toLocaleString()}`;
-                        priceLabel = 'Price';
                     }
                     
                     // Get property type
-                    const propertyType = p.PropertySubType || p.StructureType?.[0] || 'Property';
+                    const propertyType = p.PropertySubType || 
+                                        (p.StructureType && p.StructureType[0]) || 
+                                        'Property';
                     
                     // Format living area - only show if > 0
                     let livingAreaDisplay = '';
@@ -263,17 +252,46 @@
                     }
                     
                     // Get first image
-                    const firstImage = p.Media?.find(m => m.MediaCategory === 'Property Photo')?.MediaURL || 
-                                     'https://via.placeholder.com/400x250/1a73e8/ffffff?text=Property+Image';
+                    let firstImage = 'https://via.placeholder.com/400x250/1a73e8/ffffff?text=Property+Image';
+                    if (p.Media && Array.isArray(p.Media)) {
+                        const propertyPhoto = p.Media.find(m => m.MediaCategory === 'Property Photo');
+                        if (propertyPhoto && propertyPhoto.MediaURL) {
+                            firstImage = propertyPhoto.MediaURL;
+                        }
+                    }
                     
                     // Collect features that have data
                     const features = [];
-                    if (p.LotFeatures && p.LotFeatures.length > 0) {
+                    if (p.LotFeatures && Array.isArray(p.LotFeatures) && p.LotFeatures.length > 0) {
                         features.push(...p.LotFeatures.slice(0, 2));
                     }
-                    if (p.Heating && p.Heating.length > 0 && !p.Heating.includes('Not known')) {
-                        features.push(...p.Heating.slice(0, 1));
+                    if (p.Heating && Array.isArray(p.Heating) && p.Heating.length > 0) {
+                        const validHeating = p.Heating.filter(h => h !== 'Not known');
+                        if (validHeating.length > 0) {
+                            features.push(validHeating[0]);
+                        }
                     }
+                    
+                    // Truncate description if too long
+                    let descriptionHTML = '';
+                    if (p.PublicRemarks && p.PublicRemarks.trim()) {
+                        const truncatedDesc = p.PublicRemarks.length > 120 ? 
+                            p.PublicRemarks.substring(0, 120) + '...' : 
+                            p.PublicRemarks;
+                        descriptionHTML = `<div class="description">${truncatedDesc}</div>`;
+                    }
+                    
+                    // Create features HTML
+                    let featuresHTML = '';
+                    if (features.length > 0) {
+                        featuresHTML = `<div class="features">${features.map(feature => 
+                            `<span class="feature-tag">${feature}</span>`).join('')}</div>`;
+                    }
+                    
+                    // Create address
+                    const address = p.UnparsedAddress || 'Address not specified';
+                    const city = p.City || '';
+                    const fullAddress = city ? `${address}, ${city}` : address;
                     
                     return `
                         <div class="card">
@@ -281,11 +299,11 @@
                                 <div class="status-badge ${p.StandardStatus !== 'Active' ? 'inactive-badge' : ''}">
                                     ${p.StandardStatus || 'Available'}
                                 </div>
-                                <img src="${firstImage}" alt="${propertyType} in ${p.City}">
+                                <img src="${firstImage}" alt="${propertyType} in ${city}" loading="lazy">
                             </div>
                             <div class="content">
                                 <div class="price">${priceDisplay}</div>
-                                <div class="address">${p.UnparsedAddress || 'Address not specified'}, ${p.City || ''}</div>
+                                <div class="address">${fullAddress}</div>
                                 <span class="property-type">${propertyType}</span>
                                 
                                 <div class="details-grid">
@@ -318,30 +336,20 @@
                                     ` : ''}
                                 </div>
                                 
-                                ${p.PublicRemarks ? `
-                                    <div class="description">
-                                        ${p.PublicRemarks.length > 120 ? p.PublicRemarks.substring(0, 120) + '...' : p.PublicRemarks}
-                                    </div>
-                                ` : ''}
+                                ${descriptionHTML}
                                 
-                                ${features.length > 0 ? `
-                                    <div class="features">
-                                        ${features.map(feature => `
-                                            <span class="feature-tag">${feature}</span>
-                                        `).join('')}
-                                    </div>
-                                ` : ''}
+                                ${featuresHTML}
                                 
                                 <div class="footer">
                                     <div class="meta-info">
                                         ${p.PhotosCount > 0 ? `
-                                            <div class="meta-item photos-count">${p.PhotosCount}</div>
+                                            <div class="meta-item">${p.PhotosCount} Photos</div>
                                         ` : ''}
                                         ${p.ListingId ? `
-                                            <div class="meta-item listing-id">${p.ListingId}</div>
+                                            <div class="meta-item">ID: ${p.ListingId}</div>
                                         ` : ''}
                                     </div>
-                                    <a href="/property/${p.ListingKey}" class="btn">View Details</a>
+                                    <a href="/property/${p.ListingKey || p.ListingId || '#'}" class="btn">View Details</a>
                                 </div>
                             </div>
                         </div>
@@ -350,16 +358,13 @@
                 
             } catch (error) {
                 console.error('Error loading listings:', error);
-                document.getElementById('listings-grid').innerHTML = 
-                    '<div class="error">⚠️ Error loading properties. Please try again later.</div>';
+                const grid = document.getElementById('listings-grid');
+                grid.innerHTML = '<div class="error">Error loading properties. Please try again later.</div>';
             }
+        }
         
-    
         // Load listings on page load
         document.addEventListener('DOMContentLoaded', loadListings);
-        
-        // Optional: Auto-refresh every 30 seconds
-        // setInterval(loadListings, 30000);
     </script>
 </body>
 </html>
