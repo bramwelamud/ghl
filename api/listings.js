@@ -27,8 +27,8 @@ export default async function handler(req, res) {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: new URLSearchParams({
-        client_id: 'PfSfzRj7UaVnevOYtmYopvGK',
-        client_secret: 'wMzcKq7pgBnvHTqcz0UaW0Vz',
+        client_id: 'CCd3CtzKJubeK1XaWdh75kLS',
+        client_secret: 'QRAkaLgOFSyo5bwk3TQeXXow',
         grant_type: 'client_credentials',
         scope: 'DDFApi_Read'
       })
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
     console.log('Got token, fetching properties...');
 
     // Get properties
-    const ddfResponse = await fetch("https://ddfapi.realtor.ca/odata/v1/Property?$top=100&PropertyType=Single Family&PropertyType=Multi-family", {
+    const ddfResponse = await fetch("https://ddfapi.realtor.ca/odata/v1/Property", {
       headers: { 
         'Authorization': `Bearer ${tokenData.access_token}`,
         'Accept': 'application/json',
